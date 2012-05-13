@@ -13,7 +13,7 @@ def parse_args():
     p.add_option('-p', '--server_port', action='store',
                  dest='server_port', type='int', default='9199')
     p.add_option('-n', '--name', action='store',
-                 dest='name', type='string', default='test')
+                 dest='name', type='string', default='tutorial')
     p.add_option('-a', '--algo', action='store',
                  dest='algo', type='string', default="PA")
     return p.parse_args()
