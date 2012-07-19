@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
+import sys,json
 from jubatus.classifier import client
 from jubatus.classifier import types
 
@@ -39,20 +39,25 @@ if __name__ == '__main__':
 
     classifier = client.classifier(options.server_ip,options.server_port)
 
-    str_fil_types = {"detag": {"method": "regexp", "pattern": "<[^>]*>", "replace": "" }}
-    str_fil_rules = [types.filter_rule("message", "detag", "-detagged")]
-    num_fil_types = {}
-    num_fil_rules = []
-    str_type= {}
-    str_rules = [types.string_rule("message-detagged","space","bin","bin")]
-    num_type = {}
-    num_rules = []
+    converter = {
+              "string_filter_types": {
+              "detag": { "method": "regexp", "pattern": "<[^>]*>", "replace": "" }
+               },
+              "string_filter_rules":
+                 [
+                { "key": "message", "type": "detag", "suffix": "-detagged" }
+                 ],
+                'num_filter_types': {},
+                'num_filter_rules': [],
+                'string_types': {},
+                'string_rules': [
+                    {'key': 'message-detagged', 'type': "space", "sample_weight": "bin", "global_weight": "bin"}
+                    ],
+                'num_types': {},
+                'num_rules': []
+                }
 
-    converter = types.converter_config(str_fil_types, str_fil_rules, num_fil_types, num_fil_rules,
-                                       str_type, str_rules, num_type, num_rules)
-    config = types.config_data(options.algo, converter);
-
-    print config
+    config = types.config_data(options.algo, json.dumps(converter))
 
     pname = options.name
 
