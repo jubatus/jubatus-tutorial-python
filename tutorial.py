@@ -14,8 +14,6 @@ def parse_args():
                  dest='server_port', type='int', default='9199')
     p.add_option('-n', '--name', action='store',
                  dest='name', type='string', default='tutorial')
-    p.add_option('-a', '--algo', action='store',
-                 dest='algo', type='string', default="PA")
     return p.parse_args()
 
 def get_most_likely(estm):
@@ -25,9 +23,9 @@ def get_most_likely(estm):
     result[0] = ''
     result[1] = 0
     for res in estm:
-        if prob == None or res.prob > prob :
+        if prob == None or res.score > prob :
             ans = res.label
-            prob = res.prob
+            prob = res.score
             result[0] = ans
             result[1] = prob
     return result
@@ -39,30 +37,8 @@ if __name__ == '__main__':
 
     classifier = client.classifier(options.server_ip,options.server_port)
 
-    converter = {
-              "string_filter_types": {
-              "detag": { "method": "regexp", "pattern": "<[^>]*>", "replace": "" }
-               },
-              "string_filter_rules":
-                 [
-                { "key": "message", "type": "detag", "suffix": "-detagged" }
-                 ],
-                'num_filter_types': {},
-                'num_filter_rules': [],
-                'string_types': {},
-                'string_rules': [
-                    {'key': 'message-detagged', 'type': "space", "sample_weight": "bin", "global_weight": "bin"}
-                    ],
-                'num_types': {},
-                'num_rules': []
-                }
-
-    config = types.config_data(options.algo, json.dumps(converter))
-
     pname = options.name
 
-    print classifier.set_config(pname,config)
-    
     print classifier.get_config(pname)
     print classifier.get_status(pname)
 
@@ -78,8 +54,6 @@ if __name__ == '__main__':
     print classifier.save(pname, "tutorial")
 
     print classifier.load(pname, "tutorial")
-
-    print classifier.set_config(pname, config)
 
     print classifier.get_config(pname)
 
