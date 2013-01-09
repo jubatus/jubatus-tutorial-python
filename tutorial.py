@@ -49,7 +49,8 @@ if __name__ == '__main__':
         datum = types.datum(  [["message", dat]], [] )
 #                           ([sv(=string vector)], [nv(=number vector)])
         classifier.train(pname,[(label,datum)])
-        print classifier.get_status(pname)
+
+    print classifier.get_status(pname)
 
     print classifier.save(pname, "tutorial")
 
