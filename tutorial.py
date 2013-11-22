@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import sys,json
-from jubatus.classifier import client
-from jubatus.classifier import types
+
+from jubatus.classifier.client import Classifier
+from jubatus.classifier.types import LabeledDatum
+from jubatus.common import Datum
 
 def parse_args():
     from optparse import OptionParser, OptionValueError
@@ -35,34 +37,31 @@ def get_most_likely(estm):
 if __name__ == '__main__':
     options, remainder = parse_args()
 
-    classifier = client.classifier(options.server_ip,options.server_port)
+    classifier = Classifier(options.server_ip,options.server_port, options.name, 10.0)
 
-    pname = options.name
-
-    print classifier.get_config(pname)
-    print classifier.get_status(pname)
+    print classifier.get_config()
+    print classifier.get_status()
 
 
     for line in open('train.dat'):
         label, file = line[:-1].split(',')
         dat = open(file).read()
-        datum = types.datum(  [["message", dat]], [] )
-#                           ([sv(=string vector)], [nv(=number vector)])
-        classifier.train(pname,[(label,datum)])
+        datum = Datum({"message": dat})
+        classifier.train([LabeledDatum(label, datum)])
 
-    print classifier.get_status(pname)
+    print classifier.get_status()
 
-    print classifier.save(pname, "tutorial")
+    print classifier.save("tutorial")
 
-    print classifier.load(pname, "tutorial")
+    print classifier.load("tutorial")
 
-    print classifier.get_config(pname)
+    print classifier.get_config()
 
     for line in open('test.dat'):
         label, file = line[:-1].split(',')
         dat = open(file).read()        
-        datum = types.datum(  [["message", dat]], [] )
-        ans = classifier.classify(pname,[(datum)])
+        datum = Datum({"message": dat})
+        ans = classifier.classify([datum])
         if ans != None:
             estm = get_most_likely(ans[0])
             if (label == estm[0]):
@@ -70,5 +69,4 @@ if __name__ == '__main__':
             else:
                 result = "NG"
             print result + "," + label + ", " + estm[0] + ", " + str(estm[1])
-
 
