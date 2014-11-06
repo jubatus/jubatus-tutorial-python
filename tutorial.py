@@ -57,6 +57,8 @@ if __name__ == '__main__':
 
     print classifier.get_config()
 
+    count_ok = 0
+    count_ng = 0
     for line in open('test.dat'):
         label, file = line[:-1].split(',')
         dat = open(file).read()        
@@ -66,7 +68,11 @@ if __name__ == '__main__':
             estm = get_most_likely(ans[0])
             if (label == estm[0]):
                 result = "OK"
+                count_ok += 1
             else:
                 result = "NG"
+                count_ng += 1
             print result + "," + label + ", " + estm[0] + ", " + str(estm[1])
-
+    print "==================="
+    print "OK: {0}".format(count_ok)
+    print "NG: {0}".format(count_ng)
