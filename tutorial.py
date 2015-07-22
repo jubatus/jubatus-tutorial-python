@@ -39,30 +39,30 @@ if __name__ == '__main__':
 
     classifier = Classifier(options.server_ip,options.server_port, options.name, 10.0)
 
-    print classifier.get_config()
-    print classifier.get_status()
+    print(classifier.get_config())
+    print(classifier.get_status())
 
 
     for line in open('train.dat'):
         label, file = line[:-1].split(',')
-        dat = open(file).read()
-        datum = Datum({"message": dat})
+        dat = open(file, 'rb').read()
+        datum = Datum({"message": str(dat)})
         classifier.train([LabeledDatum(label, datum)])
 
-    print classifier.get_status()
+    print(classifier.get_status())
 
-    print classifier.save("tutorial")
+    print(classifier.save("tutorial"))
 
-    print classifier.load("tutorial")
+    print(classifier.load("tutorial"))
 
-    print classifier.get_config()
+    print(classifier.get_config())
 
     count_ok = 0
     count_ng = 0
     for line in open('test.dat'):
         label, file = line[:-1].split(',')
-        dat = open(file).read()        
-        datum = Datum({"message": dat})
+        dat = open(file, 'rb').read()
+        datum = Datum({"message": str(dat)})
         ans = classifier.classify([datum])
         if ans != None:
             estm = get_most_likely(ans[0])
@@ -72,7 +72,7 @@ if __name__ == '__main__':
             else:
                 result = "NG"
                 count_ng += 1
-            print result + "," + label + ", " + estm[0] + ", " + str(estm[1])
-    print "==================="
-    print "OK: {0}".format(count_ok)
-    print "NG: {0}".format(count_ng)
+            print(result + "," + label + ", " + estm[0] + ", " + str(estm[1]))
+    print("===================")
+    print("OK: {0}".format(count_ok))
+    print("NG: {0}".format(count_ng))
