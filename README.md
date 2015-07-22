@@ -8,7 +8,7 @@ Brief Usage
 -----------
 
 ```
-$ wget http://people.csail.mit.edu/jrennie/20Newsgroups/20news-bydate.tar.gz
+$ wget http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz
 $ tar -xvzf 20news-bydate.tar.gz
 
 $ jubaclassifier --name tutorial --configpath config.json
