@@ -46,7 +46,7 @@ if __name__ == '__main__':
     for line in open('train.dat'):
         label, file = line[:-1].split(',')
         dat = open(file, 'rb').read()
-        datum = Datum({"message": str(dat)})
+        datum = Datum({"message": dat.decode('latin1')})
         classifier.train([LabeledDatum(label, datum)])
 
     print(classifier.get_status())
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     for line in open('test.dat'):
         label, file = line[:-1].split(',')
         dat = open(file, 'rb').read()
-        datum = Datum({"message": str(dat)})
+        datum = Datum({"message": dat.decode('latin1')})
         ans = classifier.classify([datum])
         if ans != None:
             estm = get_most_likely(ans[0])
