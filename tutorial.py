@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import sys,json
 
 from jubatus.classifier.client import Classifier
@@ -37,26 +39,43 @@ def get_most_likely(estm):
 if __name__ == '__main__':
     options, remainder = parse_args()
 
+    # Create a client instance.
     classifier = Classifier(options.server_ip,options.server_port, options.name, 10.0)
 
+    # Show configuration.
+    print("--- Configuration ----------")
     print(classifier.get_config())
+    print()
+
+    # Show the status of classifier before training.
+    print("--- Status ----------")
     print(classifier.get_status())
+    print()
 
-
+    # Start processing the training dataset.
+    print("--- Training ----------")
     for line in open('train.dat'):
         label, file = line[:-1].split(',')
         dat = open(file, 'rb').read()
         datum = Datum({"message": dat.decode('latin1')})
         classifier.train([LabeledDatum(label, datum)])
+    print()
 
+    # Show the status of classifier after training.
+    print("--- Status ----------")
     print(classifier.get_status())
+    print()
 
+    # Save the trained model to local file (under /tmp by default).
+    print("--- Save Model ----------")
     print(classifier.save("tutorial"))
+    print()
 
-    print(classifier.load("tutorial"))
+    # You can load the saved model file to memory using `load` RPC.
+    #print(classifier.load("tutorial"))
 
-    print(classifier.get_config())
-
+    # Now confirm the precision of the trained classifier using test dataset.
+    print("--- Test ----------")
     count_ok = 0
     count_ng = 0
     for line in open('test.dat'):
