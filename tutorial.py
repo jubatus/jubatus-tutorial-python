@@ -40,7 +40,7 @@ if __name__ == '__main__':
     options, remainder = parse_args()
 
     # Create a client instance.
-    classifier = Classifier(options.server_ip,options.server_port, options.name, 10.0)
+    classifier = Classifier(options.server_ip,options.server_port, options.name, 10)
 
     # Show configuration.
     print("--- Configuration ----------")
