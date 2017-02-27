@@ -2,7 +2,7 @@ Jubatus Tutorial in Python
 ==========================
 
 * Jubatus Python Client is required for this tutorial (`pip install jubatus`).
-* For details, see [Quick Start](http://jubat.us/en/quickstart.html) and [Tutorial](http://jubat.us/en/tutorial.html).
+* For details, see [Quick Start](http://jubat.us/en/quickstart.html) and [Tutorial](http://jubat.us/en/tutorial/).
 
 Brief Usage
 -----------
